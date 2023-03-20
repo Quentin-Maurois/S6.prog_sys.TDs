@@ -1,0 +1,17 @@
+Exercice 2 :
+les bibliothèques utilisées sont : 
+linux-vdso.so.1
+libc.so.6
+
+
+Exercice 3 :
+le programme statique prends beaucoup plus de place (74Mo contre 20Mo)
+
+
+Exercice 4 :
+les résultats des tests sont bien identiques
+les fichiers ont sensiblement la même taille
+les codes de unused n'ont pas été unclus
+
+
+
