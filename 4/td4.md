@@ -158,3 +158,14 @@ Autre chose : l'utilisation de mon cpu a augmenté de 30% au maximum (passant de
 
 
 ### Exercice 9 :
+Sur windows, on doit spécifier au système les options de création de processus
+
+
+### Exercice 10 :
+Création de threads même si je ne suis pas sûr d'avoir tout bien compris
+
+
+### Exercice 11 :
+Personnellement, je comprends mieux l'approche Posix car c'est la plus mise en avant lors de ce TP et que je n'avais utilisé aucune des deux auparavant mais également car j'aime bien sa simplicité d'utilisation.
+Pour windows, les threads sont mieux intégrés au système et permettent une séparation réelle entre thread et processus. Malgré cela, je ne me rends pas bien compte des différences que cela engendre que ce soit d'un niveau des performances ou des accès mémoire
+
