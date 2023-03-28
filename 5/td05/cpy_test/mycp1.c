@@ -4,10 +4,13 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <libgen.h>
+
+#define MAX_BUFFER 4096
 
 void copy_file(char* src_path, char* dst_path) {
     int src_fd, dst_fd, n;
-    char buf[4096];
+    char buf[MAX_BUFFER];
     struct stat src_stat;
     
     // Ouvre le fichier source en lecture
@@ -53,9 +56,10 @@ void copy_file(char* src_path, char* dst_path) {
     }
 }
 
+
 void copy_files_to_dir(int argc, char* argv[], char* dir_path) {
     int i;
-    char dst_path[4096];
+    char dst_path[MAX_BUFFER];
     struct stat dir_stat;
     
     // Vérifie que le répertoire destination existe
@@ -76,7 +80,7 @@ void copy_files_to_dir(int argc, char* argv[], char* dir_path) {
 }
 
 int main(int argc, char* argv[]) {
-    struct stat src_stat, dst_stat;
+    struct stat dst_stat;
     
     // Vérifie le nombre d'arguments
     if (argc < 3) {
@@ -91,5 +95,10 @@ int main(int argc, char* argv[]) {
         if (argc != 3) {
             fprintf(stderr, "Erreur: le dernier argument doit être un répertoire");
         }
+        copy_file(argv[argc-2], argv[argc-1]);
+    }
+    else
+    {
+        copy_files_to_dir(argc, argv, argv[argc-1]);
     }
 }

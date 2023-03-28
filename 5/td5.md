@@ -1,3 +1,5 @@
+# Quentin Maurois - compte rendu
+
 ### Exercice 1 :
 ```shell
 [quentin@LASTERIX td05]$ ./fd_simple.exe tst_lsrec.sh 
@@ -50,3 +52,22 @@ En appelant de manière récursive, il faut penser à ne pas inclure le dossier 
 
 
 ### Exercice 3 :
+```shell
+[quentin@LASTERIX td05]$ ls
+cpy_test       lsrec.exe  set_tst_dir.sh  tst_perf.sh
+fd_simple.c    Makefile   tst_lsrec.sh    util.c
+fd_simple.exe  mycp1.c    tst_mycp1.sh    util.h
+lsrec.c        mycp1.exe  tst_mycp2.sh    util.o
+[quentin@LASTERIX td05]$ ls cpy_test/
+[quentin@LASTERIX td05]$ ./mycp1.exe util.c mycp1.c fd_simple.c lsrec.c cpy_test/
+[quentin@LASTERIX td05]$ ls cpy_test/
+fd_simple.c  lsrec.c  mycp1.c  util.c
+[quentin@LASTERIX td05]$ ./mycp1.exe cpy_test/util.c cpy_test/un_peu_moins_util.c
+[quentin@LASTERIX td05]$ ls cpy_test/
+fd_simple.c  lsrec.c  mycp1.c  un_peu_moins_util.c  util.c
+```
+
+
+
+### Exercice 4 :
+Un peu comme pour l'exercice 1 mais je n'ai pas réussi à le faire marcher.

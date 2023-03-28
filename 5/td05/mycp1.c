@@ -1,70 +1,104 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <dirent.h>
-#include <string.h>
+#include <libgen.h>
 
-#define MAX 100
+#define MAX_BUFFER 4096
 
-int main (int argc, char** argv)
-{
-    if (argc < 2) return(1);
-
-    char* output_dir_path = *(argv - argc - 1);
-    int input_fd, output_fd;
-
-
-    printf("chemin : %s\n", output_dir_path);
-    //on regarde si le dernier argument est répertoire
-    // struct stat sbuf;
-    // int m;
-    // if (stat(*(argv + argc - 1), &sbuf) >= 0)
-    // {
-    //     m = sbuf.st_mode;
-    // }
-    // if (S_ISDIR(m))
-    // {
-    //     printf("c'est vers un dossier que vous voulez copier\n");
-    //     dir_path = *(argv + argc - 1);  //new path
-    // }
-
-
-    char buffer[MAX];
-
+void copy_file(char* src_path, char* dst_path) {
+    int src_fd, dst_fd, n;
+    char buf[MAX_BUFFER];
+    struct stat src_stat;
     
-
-
-
-    for (int i = 0; i < (argc - 1); i++)
-    {
-        //for each file
-        ssize_t bytes_read, bytes_written;
-
-        // ouverture des fichiers en lecture
-        char* path = 
-        input_fd = open(*(argv+i), O_RDONLY);
-        if (input_fd == -1) {
-            perror("open");
-            return 1;
-        }
-
-
-        while ((bytes_read = read(input_fd, buffer, BUFSIZ)) > 0)
-        {
-            bytes_written = write(output_fd, buffer, bytes_read);
-            if (bytes_written != bytes_read) {
-                perror("write");
-                return 1;
-            }
+    // Ouvre le fichier source en lecture
+    src_fd = open(src_path, O_RDONLY);
+    if (src_fd == -1) {
+        perror("Erreur ouverture fichier source");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Récupère les attributs du fichier source
+    if (stat(src_path, &src_stat) == -1) {
+        perror("Erreur stat fichier source");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Ouvre le fichier destination en écriture (crée le fichier s'il n'existe pas)
+    dst_fd = open(dst_path, O_WRONLY | O_CREAT | O_TRUNC, src_stat.st_mode);
+    if (dst_fd == -1) {
+        perror("Erreur ouverture fichier destination");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Copie le contenu du fichier source dans le fichier destination
+    while ((n = read(src_fd, buf, sizeof(buf))) > 0) {
+        if (write(dst_fd, buf, n) != n) {
+            perror("Erreur écriture fichier destination");
+            exit(EXIT_FAILURE);
         }
     }
+    if (n == -1) {
+        perror("Erreur lecture fichier source");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Ferme les fichiers
+    if (close(src_fd) == -1) {
+        perror("Erreur fermeture fichier source");
+        exit(EXIT_FAILURE);
+    }
+    if (close(dst_fd) == -1) {
+        perror("Erreur fermeture fichier destination");
+        exit(EXIT_FAILURE);
+    }
+}
 
 
+void copy_files_to_dir(int argc, char* argv[], char* dir_path) {
+    int i;
+    char dst_path[MAX_BUFFER];
+    struct stat dir_stat;
+    
+    // Vérifie que le répertoire destination existe
+    if (stat(dir_path, &dir_stat) == -1) {
+        perror("Erreur stat répertoire destination");
+        exit(EXIT_FAILURE);
+    }
+    if (!S_ISDIR(dir_stat.st_mode)) {
+        fprintf(stderr, "Erreur: %s n'est pas un répertoire\n", dir_path);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Parcourt les fichiers sources et les copie dans le répertoire destination
+    for (i = 1; i < argc - 1; i++) {
+        sprintf(dst_path, "%s/%s", dir_path, basename(argv[i]));
+        copy_file(argv[i], dst_path);
+    }
+}
 
-
-
-    return (0);
+int main(int argc, char* argv[]) {
+    struct stat dst_stat;
+    
+    // Vérifie le nombre d'arguments
+    if (argc < 3) {
+        fprintf(stderr, "Usage: %s fic1 fic2\n", argv[0]);
+        fprintf(stderr, "       %s fic1 fic2 ... dir\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Vérifie si la dernière argument est un fichier ou un répertoire
+    if (stat(argv[argc-1], &dst_stat) == -1) {
+        // Si la stat échoue, on considère que le dernier argument est un nom de fichier
+        if (argc != 3) {
+            fprintf(stderr, "Erreur: le dernier argument doit être un répertoire");
+        }
+        copy_file(argv[argc-2], argv[argc-1]);
+    }
+    else
+    {
+        copy_files_to_dir(argc, argv, argv[argc-1]);
+    }
 }
