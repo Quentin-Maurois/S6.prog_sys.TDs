@@ -1,0 +1,21 @@
+total 204
+-rw-r--r-- 1 quentin quentin   417 Apr  2 23:50 ecrivain.c
+-rwxr-xr-x 1 quentin quentin 17440 Apr  3 18:51 ecrivain.exe
+-rw-r--r-- 1 quentin quentin     0 Apr  4 12:14 foo
+-rw-r--r-- 1 quentin quentin   418 Apr  2 23:50 lecteur.c
+-rwxr-xr-x 1 quentin quentin 17432 Apr  3 18:51 lecteur.exe
+-rw-rw-r-- 1 quentin quentin  2107 Mar 24  2018 Makefile
+-rw-r--r-- 1 quentin quentin  1027 Apr  3 21:10 mypopen.c
+-rwxr-xr-x 1 quentin quentin 18280 Apr  3 21:10 mypopen.exe
+-rw-rw-r-- 1 quentin quentin  1145 Mar 28 10:26 redir.c
+-rwxr-xr-x 1 quentin quentin 18664 Mar 28 10:34 redir.exe
+-rw-r--r-- 1 quentin quentin   408 Mar 28 09:45 redir_simple.c
+-rwxr-xr-x 1 quentin quentin 16912 Mar 28 10:05 redir_simple.exe
+-rwxrwxr-x 1 quentin quentin   531 Mar 23  2017 tst_redir.sh
+-rw-r--r-- 1 quentin quentin   368 Mar 28 11:02 tube_anonyme1.c
+-rwxr-xr-x 1 quentin quentin 17264 Mar 28 11:02 tube_anonyme1.exe
+-rw-r--r-- 1 quentin quentin   685 Mar 28 11:43 tube_anonyme2.c
+-rwxr-xr-x 1 quentin quentin 17488 Mar 28 11:43 tube_anonyme2.exe
+-rw-r--r-- 1 quentin quentin  1484 Apr  1 16:37 tube_anonyme_multi.c
+-rwxr-xr-x 1 quentin quentin 18088 Apr  1 16:37 tube_anonyme_multi.exe
+drwxrwxr-x 6 quentin quentin  4096 Mar 27  2017 Win32NamedPipe

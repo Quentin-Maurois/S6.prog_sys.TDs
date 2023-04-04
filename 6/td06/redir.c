@@ -22,7 +22,7 @@ void usage(char *progname)
 
 int main(int argc, char *argv[])
 {
-	int std_fd;
+	int std_fd, fd;
 
     if (argc < 4) {
         usage(*argv);
@@ -33,13 +33,23 @@ int main(int argc, char *argv[])
     case 'R':
     case 'r':
         std_fd = 0;
+        fd = open(argv[2],O_RDONLY);
+        dup2(fd, std_fd);
+        close(fd);
         break;
     case 'W':
     case 'w':
         std_fd = 1;
+        fd = open(argv[2],O_WRONLY|O_CREAT|O_TRUNC , S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+        dup2(fd, std_fd);
+        close(fd);
         break;
     default:
         usage(*argv);
     }
 
+    execvp(argv[3], &(argv[4]));
+
+    close(std_fd);
+    return(0);
 }
